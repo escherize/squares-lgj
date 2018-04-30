@@ -9,6 +9,7 @@
   ; Set frame rate to 30 frames per second.
   (q/frame-rate 30)
   (q/no-cursor)
+  (q/no-stroke)
   {:player {:pos {:x 100 :y 100}}
    :enemies []
    :candy (engine/spawn-candy)

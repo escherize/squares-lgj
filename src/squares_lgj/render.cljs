@@ -3,48 +3,45 @@
 
 (def max-width (min 600 js/window.innerWidth))
 (def max-height (min 600 js/window.innerHeight))
-
 (def base-unit (/ (min max-height max-width) 100))
 
-(def square-width (* 5 base-unit))
-(def square-height (* 5 base-unit))
+(def circle-radius (* 5 base-unit))
 
-(def white [245 245 245])
-(def black [10 10 10])
-(def red [245 0 0])
-(def green [0 245 0])
-(def blue [0 0 245])
 
-(def player-color blue)
-(def candy-color green)
-(def enemy-color red)
 
-(defn square [square]
-  (q/rect (:x (:pos square)) (:y (:pos square)) square-width square-height))
+(def background [247,255,247])
+(def player-color [41,47,54])
+(def candy-color [78,205,196])
+(def enemy-color [152,12,232])
+
+(defn circle [circle]
+  (q/ellipse (:x (:pos circle))
+             (:y (:pos circle))
+             circle-radius
+             circle-radius))
 
 (defn player [player]
   (apply q/fill player-color)
-  (square player))
+  (circle player))
 
 (defn candy [candy]
   (apply q/fill candy-color)
-  (square candy))
+  (circle candy))
 
 (defn enemy [enemy]
   (apply q/fill enemy-color)
-  (square enemy))
+  (circle enemy))
 
 (defn score [score]
-  (apply q/fill white)
+  (apply q/fill candy-color)
   (q/text-size 20)
-  (q/text "Score" 25 25)
-  (q/text-num score 90 25))
+  (q/text-num score (- (/ max-width 2) 25) 25))
 
 (defn start [state]
-  (apply q/fill red)
+  (apply q/fill enemy-color)
   (q/text-size 45)
-  (q/text "Squares" 140 200)
-  (apply q/fill white)
+  (q/text "Circles" 140 200)
+  (apply q/fill candy-color)
   (q/text-size 25)
   (q/text "Click to start" 255 355)
   (player {:pos {:x 215 :y 330}})
@@ -61,7 +58,7 @@
   (player (:player state))
   (candy (:candy state))
   (doseq [e (:enemies state)] (enemy e))
-  (apply q/fill white)
+  (apply q/fill candy-color)
   (let [score (:score state)
         max-score (max (:max-score state) score)]
     (q/text-size 40)
@@ -74,7 +71,7 @@
     (q/text "Click to restart" 205 355)))
 
 (defn state [state]
-  (q/background 10 10 10)
+  (apply q/background background)
   (condp = (:mode state)
     :start (start state)
     :playing   (playing state)

@@ -3,7 +3,12 @@
             [squares-lgj.render :as render]))
 
 (defn get-player []
-  {:pos {:x (min (q/mouse-x) (- render/max-width render/square-width)) :y (min (q/mouse-y) (- render/max-height render/square-height))}})
+  {:pos {:x (min (q/mouse-x)
+                 (- render/max-width
+                    render/circle-radius))
+         :y (min (q/mouse-y)
+                 (- render/max-height
+                    render/circle-radius))}})
 
 (defn handle-mouse [state]
   (condp = (:mode state)

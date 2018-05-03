@@ -1,14 +1,10 @@
 (ns squares-lgj.render
   (:require [quil.core :as q :include-macros true]))
 
-(def max-width (min 600 js/window.innerWidth))
-(def max-height (min 600 js/window.innerHeight))
+(def max-width (max 600 js/window.innerWidth))
+(def max-height (max 600 js/window.innerHeight))
 (def base-unit (/ (min max-height max-width) 100))
-
 (def circle-radius (* 5 base-unit))
-
-
-
 (def background [247,255,247])
 (def player-color [41,47,54])
 (def candy-color [78,205,196])
@@ -51,7 +47,8 @@
 (defn playing [state]
   (player (:player state))
   (candy (:candy state))
-  (score (:score state))
+  (score (+ (:score state)
+            (count (:enemies state))))
   (doseq [e (:enemies state)] (enemy e)))
 
 (defn game-over [state]
